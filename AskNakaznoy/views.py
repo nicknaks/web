@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from django.urls import reverse
 
+from django.core.cache import cache
 from AskNakaznoy.models import *
 from AskNakaznoy.forms import *
 from django.contrib import auth
@@ -21,7 +22,8 @@ def login(request):
         form = LoginForm()
         return render(request, 'login_page.html', {
             'form': form,
-            'tags': Tag.objects.best()[:7],
+            'tags': cache.get('best_tags'),
+            'best_users': cache.get('best_users'),
         })
 
     if request.method == 'POST':
@@ -39,7 +41,8 @@ def login(request):
         print(form.errors)
         return render(request, 'login_page.html', {
             'form': form,
-            'tags': Tag.objects.best()[:7],
+            'tags': cache.get('best_tags'),
+            'best_users': cache.get('best_users'),
         })
 
 
@@ -68,8 +71,9 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'registration_page.html', {
-            'tags': Tag.objects.best()[:7],
+            'tags': cache.get('best_tags'),
             'form': form,
+            'best_users': cache.get('best_users'),
     })
 
 
@@ -91,8 +95,9 @@ def settings(request):
         form = SettingsForm(initial=user_data)
 
     return render(request, 'settings_page.html', {
-        'tags': Tag.objects.best()[:7],
+        'tags': cache.get('best_tags'),
         'form': form,
+        'best_users': cache.get('best_users'),
     })
 
 
@@ -107,8 +112,9 @@ def ask(request):
         form = QuestionForm(profile=request.user.profile)
 
     return render(request, 'ask_question.html', {
-        'tags': Tag.objects.best()[:7],
+        'tags': cache.get('best_tags'),
         'form': form,
+        'best_users': cache.get('best_users'),
     })
 
 
@@ -125,8 +131,9 @@ def new_questions(request):
 
     return render(request, 'new_question.html', {
         'questions': db_q_by_page,
-        'tags': Tag.objects.best()[:7],
+        'tags': cache.get('best_tags'),
         'user': request.user,
+        'best_users': cache.get('best_users'),
     })
 
 
@@ -136,8 +143,9 @@ def hot_questions(request):
 
     return render(request, 'hot_question.html', {
         'questions': db_q_by_page,
-        'tags': Tag.objects.best()[:7],
+        'tags': cache.get('best_tags'),
         'user': request.user,
+        'best_users': cache.get('best_users'),
     })
 
 
@@ -148,7 +156,8 @@ def tag_questions(request, pk):
     return render(request, 'tag_question.html', {
         'tag': pk,
         'questions': question_pages,
-        'tags': Tag.objects.best()[:7],
+        'tags': cache.get('best_tags'),
+        'best_users': cache.get('best_users'),
     })
 
 
@@ -165,10 +174,11 @@ def question(request, pk):
         form = CommentQuestionForm(profile=None, question=question_by_pk)
 
     return render(request, 'question.html', {
-        'tags': Tag.objects.best()[:7],
+        'tags': cache.get('best_tags'),
         'question': question_by_pk,
         'answers': answers,
         'form': form,
+        'best_users': cache.get('best_users'),
     })
 
 

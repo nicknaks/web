@@ -1,17 +1,22 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class ProfileManager(models.Manager):
-    def best(self):
-        return self
+    def best(self, data):
+        users = []
+        for obj in data:
+            if datetime.today().date() - obj.published_date <= timedelta(days=7):
+                users.append(Profile.objects.get(id=obj.author_id))
+        return users
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     avatar = models.ImageField(default="pizza.jpg", verbose_name="Аватар", upload_to='avatar/%Y/%m/%d')
     nickname = models.CharField(max_length=64, verbose_name='Имя')
+
     objects = ProfileManager()
 
     def __str__(self):
@@ -82,7 +87,7 @@ class Answer(models.Model):
     question = models.ForeignKey("Question", on_delete=models.CASCADE, related_name="answers")
     text = models.TextField(verbose_name='Основной текст')
     is_correct = models.BooleanField(default=False, verbose_name='Ответ верный?')
-    rating = models.IntegerField(default=0, verbose_name='Рейтинг')
+    rating = models.IntegerField(default=1, verbose_name='Рейтинг')
     likes = models.ManyToManyField("Profile", through="AnswerLike", blank=True, related_name="liked_answers")
     objects = AnswerManager()
 

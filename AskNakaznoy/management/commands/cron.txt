@@ -1,0 +1,1 @@
+0 4 * * * /Users/nick_nak/PycharmProjects/AskMe/venv/bin/python3 /Users/nick_nak/PycharmProjects/AskMe/manage.py calc_rating
