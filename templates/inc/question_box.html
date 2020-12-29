@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="row question-box">
+    <div class="col-1">
+        <span class="row" style="margin-right: 10px;">
+            <img class="img-thumbnail" src={{ question.author.avatar.url }}>
+        </span>
+        {% include 'inc/main_page_like.html' %}
+    </div>
+    <div class="col-11">
+        <div class="question-title" style="word-break: break-all">{{ question.title }}</div>
+        <div class="q-text">
+            {{ question.short_text }}
+        </div>
+        <div class="row question-under-text">
+            <div class="col-4">
+                <a href="{% url 'question_page' question.id %}">answer({{ question.answers.count }})</a>
+            </div>
+            <div class="col-6">Tags:
+                {% with tags_question=question.tags.all %}
+                    {% for onetag in tags_question %}
+                        <a href="{% url 'tag' onetag %}">{{ onetag }}</a>
+                    {% endfor %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>

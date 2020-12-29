@@ -1,0 +1,36 @@
+{% load static %}
+<nav class="navbar navbar-expand-md fixed-top bg-warning">
+    <span class="navbar-title">
+        <a class="navbar-brand text-monospace font-weight-bold text-muted" href="{% url 'new_questions' %}">Ask Nakaznoy</a>
+    </span>
+
+    <form class="form-inline">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button class="btn input-group-text bg-white" type="submit">?</button>
+            </div>
+            <input  class="navbar-search-form form-control navbar-search-text" type="search" placeholder="Search" aria-label="Search">
+        </div>
+    </form>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav m-auto">
+            <li class="nav-item active">
+                <a class="btn btn-success" style="margin-right: 10px;" href="{% url 'ask_question' %}">Ask</a>
+            </li>
+            <li class="nav-item active">
+                <img class="img-thumbnail navbar-img" src={{ request.user.profile.avatar.url }}>
+            </li>
+            <li class="nav-item active">
+
+                <span style="margin-left: 5px;">
+                    {{ request.user.profile.nickname }}
+                </span>
+                <div class="row">
+                    <a class="navbar-settings small" href="{% url 'settings' %}">settings</a>
+                    <a class="navbar-login small" href="{% url 'logout' %}">log out</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,21 @@
+<div class="col-3">
+    <div class="col">
+        <div>
+            <h3 class="second-text font-weight-bolder">Polular Tags</h3>
+            
+            {% for tag in tags %}
+                <a href="{% url 'tag' tag %}" class="h7">{{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class=col>
+        <div>
+            <h3 class="second-text font-weight-bolder" >Best Members</h3>
+        </div>
+        <p></p><a class="underlined" href="">Mr. Freeman</a></p>
+        <p><a class="underlined" href="">Dr. House</a></p>
+        <p><a class="underlined" href="">Bender</a></p>
+        <p><a class="underlined" href="">Queen Victoria</a></p>
+        <p><a class="underlined" href="">V. Pupkin</a></p>
+    </div>
+</div>

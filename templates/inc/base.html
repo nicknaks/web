@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+{% load static %}
+
+<head>
+    <title>Ask Nakaznoy</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/my.css' %}" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header>
+        {% if request.user.is_authenticated %}
+            {% include 'inc/login_navbar.html' %}
+        {% else %}
+            {% include 'inc/unlogin_navbar.html' %}
+        {% endif %}
+    </header>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <div class="row">
+                    {% block content %}
+                    {% endblock content %}
+                <! –– Right Side ––>
+                    {% block right %}
+                        {% include 'inc/popular_tags_and_best_members.html' %}
+                    {% endblock right %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/jquery.min.js'%}"></script>
+    <script src="{% static 'js/popper.min.js'%}"></script>
+    <script src="{% static 'js/csrf.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+
+    {% block jscode %}
+
+    {% endblock %}
+
+</body>
+
+</html>

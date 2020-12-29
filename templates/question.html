@@ -1,0 +1,47 @@
+{% extends 'inc/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block content %}
+<div class="col-9">
+    <div class="media">
+        <div class="col-0" style="padding: 20px;">
+            <img src={% static "pizza.jpg"%} class=" mr-3 question-img" style= "max-width: 300px;" alt="...">
+        {% include 'inc/question_page_like.html' %}
+
+        </div>
+        <div class="media-body col-10">
+            <h5 class="mt-0">{{question.title}}</h5>
+            <p>
+                {{ question.text }}
+            </p>
+                Tags:
+                {% for onetag in question.tags.all %}
+                    <a href="{% url 'tag' onetag %}">{{ onetag }}</a>
+                {% endfor %}
+        </div>
+    </div>
+
+   {% for answer in answers %}
+      {% include 'inc/question_answer_box.html' %}
+   {% endfor %}
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button class="btn btn-success" type="submit">Answer</button>
+        {% endbuttons %}
+    </form>
+
+   {% with objects=answers %}
+        {% include 'inc/pagination.html' %}
+   {% endwith %}
+
+</div>
+{% endblock content %}
+
+{% block jscode %}
+    <script src="{% static 'js/vote.js' %}"></script>
+    <script src="{% static 'js/correct.js' %}"></script>
+{% endblock jscode %}

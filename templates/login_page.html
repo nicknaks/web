@@ -1,0 +1,22 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="col-9">
+        <div class="row">
+            <span class="h2  col-2"> Log In</span>
+        </div>
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Log in</button>
+            {% endbuttons %}
+
+            <a href="{% url 'signup' %}">create new account</a>
+        </form>
+    </div>
+
+{% endblock content %}

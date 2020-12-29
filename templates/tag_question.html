@@ -1,0 +1,27 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="col-9">
+    <div class="row">
+        <span class="h2 col-4">Tag: {{ tag }} </span>
+    </div>
+    {% for question in questions %}
+        {% include 'inc/question_box.html' %}
+    {% endfor %}
+
+    {% with objects=questions %}
+        {% include 'inc/pagination.html'%}
+    {% endwith %}
+</div>
+
+{% endblock content %}
+
+{% block right %}
+{% include 'inc/popular_tags_and_best_members.html' %}
+{% endblock right %}
+
+{% block jscode %}
+    <script src="{% static 'js/vote.js' %}"></script>
+    <script src="{% static 'js/correct.js' %}"></script>
+{% endblock jscode %}

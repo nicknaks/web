@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-md fixed-top bg-warning">
+    <a class="navbar-brand text-monospace font-weight-bold text-muted navbar-title" href="{% url 'new_questions' %}">Ask Nakaznoy</a>
+
+    <form class="form-inline">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button class="btn input-group-text bg-white" type="submit">?</button>
+            </div>
+            <input class="navbar-search-form form-control navbar-search-text" type="search" placeholder="Search" aria-label="Search">
+        </div>
+    </form>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav m-auto">
+            <li class="nav-item active">
+                <a  class="btn btn-light" href="{% url 'login' %}">Log In</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-primary" href="{% url 'signup' %}">Register</a>
+            </li>
+        </ul>
+    </div>
+</nav>

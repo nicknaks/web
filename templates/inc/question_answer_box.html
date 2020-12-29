@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="media question-box">
+    <div class="col-0">
+        <img src={{ answer.author.avatar.url }} class=" mr-3 question-img" alt="...">
+        {% include 'inc/answer_likes.html' %}
+    </div>
+    <div class="media-body">
+        {{ answer.text }}
+
+        <div class="form-check">
+        {% if answer.question.author.id == request.user.profile.id %}
+            {% if answer.is_correct == True %}
+                <input class="js-correct form-check-input" type="checkbox" id="answer-check-{{ answer.id }}" data-id="{{ answer.id }}" checked>
+            {% else %}
+                <input class="js-correct form-check-input" type="checkbox" id="answer-check-{{ answer.id }}" data-id="{{ answer.id }}">
+            {% endif %}
+        {% else %}
+            {% if answer.is_correct == True %}
+                <input class="js-correct form-check-input" type="checkbox" id="answer-check-{{ answer.id }}" data-id="{{ answer.id }}" checked disabled>
+            {% else %}
+                <input class="js-correct form-check-input" type="checkbox" id="answer-check-{{ answer.id }}" data-id="{{ answer.id }}" disabled>
+            {% endif %}
+        {% endif %}
+            <label class="form-check-label" for="answer-check-{{ answer.id }}">
+                Correct!
+            </label>
+
+        </div>
+    </div>
+</div>

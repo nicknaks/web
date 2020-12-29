@@ -1,0 +1,59 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="col-9">
+    <div>
+        <span class="h2 row-cols-1">Settings: {{ request.user.profile.nickname }}</span>
+    </div>
+    <form method="POST" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button  type="submit" class="btn btn-primary col-2">Save</button>
+        {% endbuttons %}
+{#        #}
+{#        #}
+{#        #}
+{#        <div class="form-group row">#}
+{#            <label for="inputLogin" class="col-sm-3 col-form-label">Login</label>#}
+{#            <div class="col-4">#}
+{#                <input type="text" class="form-control" id="login" placeholder="login">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group row">#}
+{#            <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>#}
+{#            <div class="col-4">#}
+{#                <input type="text" class="form-control" id="email" placeholder="email@example.com">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group row">#}
+{#            <label for="inputNickName" class="col-sm-3 col-form-label">NickName</label>#}
+{#            <div class="col-4">#}
+{#                <input type="text" class="form-control" id="login" placeholder="Enter your NickName here">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group row">#}
+{#            <label for="uploadAvatar" class="col-sm-3 col-form-label">Upload avatar</label>#}
+{#            <img src="{% static 'pizza.jpg'%}" style="max-width: 100px;" alt="">#}
+{#        </div>#}
+{##}
+{#        <span class="form-group row col-2">#}
+{#            <input type="file" class="form-control-file" id="avatar">#}
+{#        </span>#}
+{##}
+{#        <div class="col-form-label">#}
+{#            <button  type="submit" class="btn btn-primary col-2">Save</button>#}
+{#        </div>#}
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block right %}
+{% include 'inc/popular_tags_and_best_members.html' %}
+{% endblock right %}
