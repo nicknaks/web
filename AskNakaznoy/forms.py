@@ -81,6 +81,7 @@ class QuestionForm(forms.ModelForm):
             for tag in self.cleaned_data['tags'].split(' '):
                 try:
                     tag_id = Tag.objects.get(name=tag).id
+                    Tag.objects.filter(id=tag_id).update(rating=Tag.objects.get(id=tag_id).rating + 1)
                 except Tag.DoesNotExist:
                     tag_id = Tag.objects.create(name=tag).id
                 question.tags.add(tag_id)
