@@ -3,15 +3,6 @@
     {{ question.rating }}
 </div>
 <div class="btn-group" role="group" aria-label="LikeDislike">
-    {% if question.is_voted == False %}
-        <button type="button" id ="question-dislike-{{ question.pk }}" class="js-vote js-voted btn btn-danger" data-class="question" data-action="dislike" data-id="{{ question.id }}" disabled>-</button>
-    {% else %}
         <button type="button" id ="question-dislike-{{ question.pk }}" class="js-vote btn btn-danger" data-class="question" data-action="dislike" data-id="{{ question.id }}" >-</button>
-    {% endif %}
-
-    {% if question.is_voted == True %}
-        <button type="button" id ="question-like-{{ question.pk }}" class="js-vote js-voted btn btn-success" data-class="question" data-action="like" data-id="{{ question.id }}"disabled>+</button>
-    {% else %}
         <button type="button" id ="question-like-{{ question.pk }}" class="js-vote btn btn-success" data-class="question" data-action="like" data-id="{{ question.id }}" >+</button>
-    {% endif %}
 </div>

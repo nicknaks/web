@@ -6,7 +6,7 @@
 <div class="col-9">
     <div class="media">
         <div class="col-0" style="padding: 20px;">
-            <img src={% static "pizza.jpg"%} class=" mr-3 question-img" style= "max-width: 300px;" alt="...">
+            <img src={{ question.author.avatar.url }} class=" mr-3 question-img" style= "max-width: 300px;" alt="...">
         {% include 'inc/question_page_like.html' %}
 
         </div>

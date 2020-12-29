@@ -3,7 +3,7 @@ $('.js-correct').click(function (ev) {
     let $this = $(this)
     let id = $this.data('id')
 
-    let checked = !!document.getElementById('answer-check-' + id).checked;
+    let checked = document.getElementById('answer-check-' + id).checked;
 
     $.ajax('/correct/', {
         method: 'POST',
@@ -13,7 +13,6 @@ $('.js-correct').click(function (ev) {
         },
     }).done(function (data) {
         document.getElementById('answer-check-' + id).checked = data['correct']
-        console.log('Add correct to answer')
     });
 
 })

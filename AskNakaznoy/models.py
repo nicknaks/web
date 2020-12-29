@@ -28,7 +28,7 @@ class TagManager(models.Manager):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=32, verbose_name="Имя тэга")
+    name = models.CharField(max_length=32, verbose_name="Имя тэга", unique=True)
     rating = models.PositiveIntegerField(default=0)
     objects = TagManager()
 

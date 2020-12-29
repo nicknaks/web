@@ -1,3 +1,4 @@
+from itertools import islice
 from math import ceil
 from random import choice, choices
 
@@ -72,7 +73,7 @@ class Command(BaseCommand):
     def fill_tags(self, count):
         db_tags = []
         while len(db_tags) != count:
-            db_tags.append(Tag(name=faker.word() + str(faker.random.randint(0, 100000))))
+            db_tags.append(Tag(name=faker.word() + str(faker.random.randint(0, 1000000))))
 
         self.bulk_create(count, db_tags, Tag)
 
@@ -82,9 +83,10 @@ class Command(BaseCommand):
         answers = []
 
         for i in range(count):
-            author_id = faker.random.randint(0, len(all_users) - 1)
-            question_id = faker.random.randint(0, len(all_questions) - 1)
-            answer = Answer(author_id=author_id, question_id=question_id, text=faker.text())
+            answer = Answer(author_id=choice(all_users),
+                            question_id=choice(all_questions),
+                            text=faker.text(),
+                            is_correct=faker.random.randint(0, 1))
             answers.append(answer)
 
         self.bulk_create(count, answers, Answer)
@@ -98,30 +100,32 @@ class Command(BaseCommand):
         answers_likes_amount = count - questions_likes_amount
         question_likes = []
         for i in range(questions_likes_amount):
-            author_id = faker.random.randint(0, len(all_users) - 1)
-            question_id = faker.random.randint(0, len(all_questions) - 1)
-            question_likes.append(QuestionLike(user_id=author_id,
+            question_id = choice(all_questions)
+            question_likes.append(QuestionLike(user_id=choice(all_users),
                                                question_id=question_id,
                                                is_liked=faker.random.randint(0, 1)))
+            Question.objects.filter(id=question_id).update(
+                rating=Question.objects.get(id=question_id).rating + 1)
         self.bulk_create(questions_likes_amount, question_likes, QuestionLike)
 
         answers_likes = []
         for i in range(answers_likes_amount):
-            author_id = faker.random.randint(0, len(all_users) - 1)
-            answer_id = faker.random.randint(0, len(all_answers) - 1)
-            answers_likes.append(AnswerLike(user_id=author_id,
+            answer_id = choice(all_answers)
+            answers_likes.append(AnswerLike(user_id=choice(all_users),
                                             answer_id=answer_id,
                                             is_liked=faker.random.randint(0, 1)))
-
+            Answer.objects.filter(id=answer_id).update(
+                rating=Answer.objects.get(id=answer_id).rating + 1)
         self.bulk_create(answers_likes_amount, answers_likes, AnswerLike)
 
     def bulk_create(self, count, data, model_type):
         if count > 500:
             count_batch = ceil(count / 500)
             for i in range(count_batch):
-                one_batch = slice(data, 500)
-                model_type.objects.bulk_create(one_batch)
+                one_batch = islice(data, 500)
+                model_type.objects.bulk_create(one_batch, 500)
                 print("ADD 500 ")
+                data.clear()
         else:
             model_type.objects.bulk_create(data)
             print("ADD " + str(count))

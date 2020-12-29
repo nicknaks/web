@@ -156,7 +156,7 @@ def question(request, pk):
     question_by_pk = get_object_or_404(Question, id=pk)
     answers = paginate(Answer.objects.best(pk), request, 5)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
         form = CommentQuestionForm(profile=request.user.profile, question=question_by_pk, data=request.POST)
         if form.is_valid():
             form.save()
