@@ -2,15 +2,6 @@
     {{ answer.rating }}
 </div>
 <div class="btn-group" role="group" aria-label="LikeDislike">
-    {% if answer.is_liked == False %}
-        <button type="button" id ="answer-dislike-{{ answer.pk }}" class="js-vote js-voted btn btn-danger" data-class="answer" data-action="dislike" data-id="{{ answer.id }}" disabled>-</button>
-    {% else %}
-        <button type="button" id ="answer-dislike-{{ answer.pk }}" class="js-vote btn btn-danger" data-class="answer" data-action="dislike" data-id="{{ answer.id }}" >-</button>
-    {% endif %}
-
-    {% if answer.is_liked == True %}
-        <button type="button" id ="answer-like-{{ answer.pk }}" class="js-vote js-voted btn btn-success" data-class="answer" data-action="like" data-id="{{ answer.id }}" disabled>+</button>
-    {% else %}
-        <button type="button" id ="answer-like-{{ answer.pk }}" class="js-vote btn btn-success" data-class="answer" data-action="like" data-id="{{ answer.id }}" >+</button>
-    {% endif %}
+    <button type="button" id ="answer-dislike-{{ answer.pk }}" class="js-vote btn btn-danger" data-class="answer" data-action="dislike" data-id="{{ answer.id }}" >-</button>
+    <button type="button" id ="answer-like-{{ answer.pk }}" class="js-vote btn btn-success" data-class="answer" data-action="like" data-id="{{ answer.id }}" >+</button>
 </div>

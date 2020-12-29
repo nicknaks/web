@@ -132,7 +132,11 @@ class VoteQuestionForm(forms.ModelForm):
     def save(self, commit=False):
         vote = super(VoteQuestionForm, self).save(commit=False)
         qid = self.cleaned_data['question'].id
-        if self.action == 'create':
+
+        try:
+            like_id = QuestionLike.objects.get(user_id=self.cleaned_data['user'].id, question_id=qid)
+        except QuestionLike.DoesNotExist:
+            print('create')
             vote = QuestionLike.objects.create(user_id=self.cleaned_data['user'].id,
                                                question_id=qid,
                                                is_liked=self.cleaned_data['is_liked'])
@@ -140,8 +144,16 @@ class VoteQuestionForm(forms.ModelForm):
                 count = 1
             else:
                 count = -1
-        elif self.action == 'update':
-            print(2)
+            self.action = 'done'
+
+        if self.action == 'create' and like_id.is_liked == self.cleaned_data['is_liked']:
+            self.action = 'delete'
+
+        if self.action == 'create' and like_id.is_liked != self.cleaned_data['is_liked']:
+            self.action = 'update'
+
+        if self.action == 'update':
+            print('update')
             vote = QuestionLike.objects.get(user_id=self.cleaned_data['user'].id,
                                             question_id=qid)
             vote.is_liked = self.cleaned_data['is_liked']
@@ -151,8 +163,8 @@ class VoteQuestionForm(forms.ModelForm):
                 count = 2
             else:
                 count = -2
-        else:
-            print(3)
+        elif self.action == 'delete':
+            print('delete')
             vote = QuestionLike.objects.filter(user_id=self.cleaned_data['user'].id,
                                                question_id=qid).delete()
             if self.cleaned_data['is_liked']:
@@ -178,19 +190,31 @@ class VoteAnswerForm(forms.ModelForm):
 
     def save(self, commit=False):
         vote = super(VoteAnswerForm, self).save(commit=False)
-        answer_id = self.cleaned_data['answer'].id
-        if self.action == 'create':
+        aid = self.cleaned_data['answer'].id
+
+        try:
+            like_id = AnswerLike.objects.get(user_id=self.cleaned_data['user'].id, answer_id=aid)
+        except AnswerLike.DoesNotExist:
+            print('create')
             vote = AnswerLike.objects.create(user_id=self.cleaned_data['user'].id,
-                                             answer_id=answer_id,
+                                             answer_id=aid,
                                              is_liked=self.cleaned_data['is_liked'])
             if self.cleaned_data['is_liked']:
                 count = 1
             else:
                 count = -1
-        elif self.action == 'update':
-            print(2)
+            self.action = 'done'
+
+        if self.action == 'create' and like_id.is_liked == self.cleaned_data['is_liked']:
+            self.action = 'delete'
+
+        if self.action == 'create' and like_id.is_liked != self.cleaned_data['is_liked']:
+            self.action = 'update'
+
+        if self.action == 'update':
+            print('update')
             vote = AnswerLike.objects.get(user_id=self.cleaned_data['user'].id,
-                                          answer_id=answer_id)
+                                          answer_id=aid)
             vote.is_liked = self.cleaned_data['is_liked']
             vote.save()
 
@@ -198,15 +222,15 @@ class VoteAnswerForm(forms.ModelForm):
                 count = 2
             else:
                 count = -2
-        else:
-            print(3)
+        elif self.action == 'delete':
+            print('delete')
             vote = AnswerLike.objects.filter(user_id=self.cleaned_data['user'].id,
-                                             answer_id=answer_id).delete()
+                                             answer_id=aid).delete()
             if self.cleaned_data['is_liked']:
                 count = -1
             else:
                 count = 1
-        Answer.objects.filter(id=answer_id).update(rating=F('rating') + count)
+        Answer.objects.filter(id=aid).update(rating=F('rating') + count)
 
         if commit:
             vote.save()
